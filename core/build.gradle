@@ -1,18 +1,29 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+apply from: '../dependencies.gradle'
 
 android {
     namespace 'com.github.af2905.cryptop.core'
-    compileSdk 32
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
-        minSdk 23
-        targetSdk 32
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField 'String', 'API_KEY', keystoreProperties['API_KEY']
+        buildConfigField 'String', 'BASE_URL', '"https://min-api.cryptocompare.com/data/"'
     }
 
     buildTypes {
@@ -26,16 +37,30 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
+    implementation libraries.kotlin
+    implementation libraries.coreKtx
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation libraries.daggerAndroidSupport
+    implementation libraries.junitExt
+    testImplementation libraries.junit
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+    implementation libraries.room
+    implementation libraries.roomKtx
+    kapt libraries.roomCompiler
+    implementation libraries.gson
+    implementation libraries.retrofit
+    implementation libraries.retrofitConverterGson
+    implementation libraries.okhttpLoggingInterceptor
+    implementation libraries.timber
+    implementation libraries.navigationFragment
+    implementation libraries.glide
+    implementation libraries.material
+    implementation libraries.swipeRefreshLayout
+    implementation libraries.recyclerView
 }

@@ -1,16 +1,20 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
+
+apply from: '../dependencies.gradle'
 
 android {
     namespace 'com.github.af2905.cryptop'
-    compileSdk 32
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
         applicationId "com.github.af2905.cryptop"
-        minSdk 23
-        targetSdk 32
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -28,17 +32,28 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
+    implementation(project(':core'))
+    implementation(project(':detail'))
+    implementation(project(':news'))
+    implementation(project(':toplist'))
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation libraries.kotlin
+    implementation libraries.coreKtx
+
+    implementation libraries.daggerAndroidSupport
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+    implementation libraries.junitExt
+    androidTestImplementation libraries.junit
+    implementation libraries.navigationFragment
+    implementation libraries.material
+    implementation libraries.swipeRefreshLayout
+    implementation libraries.recyclerView
+    implementation libraries.timber
+    implementation libraries.navigationUi
 }
