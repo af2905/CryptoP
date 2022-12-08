@@ -2,6 +2,7 @@ package com.github.af2905.cryptop.core.di
 
 import android.content.Context
 import com.github.af2905.cryptop.core.di.module.NetworkModule
+import com.github.af2905.cryptop.core.di.module.StorageModule
 import com.github.af2905.cryptop.core.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
@@ -11,7 +12,8 @@ import dagger.android.AndroidInjectionModule
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        NetworkModule::class
+        NetworkModule::class,
+        StorageModule::class
     ]
 )
 interface CoreComponent {
